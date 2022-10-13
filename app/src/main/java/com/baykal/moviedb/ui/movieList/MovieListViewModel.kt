@@ -14,8 +14,8 @@ class MovieListViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val movieList: MutableList<MovieItem> = mutableListOf()
-    private val _movies = MutableLiveData(movieList)
-    val movies: LiveData<MutableList<MovieItem>> = _movies
+    private val _movies: MutableLiveData<List<MovieItem>> = MutableLiveData()
+    val movies: LiveData<List<MovieItem>> = _movies
 
     private var page = 1
     private var totalPages = -1
@@ -25,6 +25,7 @@ class MovieListViewModel @Inject constructor(
     }
 
     fun refreshData() {
+        movieList.clear()
         page = 1
         fetchData()
     }
@@ -34,7 +35,7 @@ class MovieListViewModel @Inject constructor(
             movieListUseCase.observe(page).collectData { response ->
                 response?.let {
                     movieList.addAll(it.results)
-                    _movies.value = movieList
+                    _movies.value = movieList.toMutableList()
                     totalPages = response.totalPages ?: -1
                     page++
                 }

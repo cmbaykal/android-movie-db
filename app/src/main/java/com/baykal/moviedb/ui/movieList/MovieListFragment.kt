@@ -36,9 +36,9 @@ class MovieListFragment : Fragment() {
             val direction = MovieListFragmentDirections.navigateToDetail(id)
             findNavController().navigate(direction)
         }
-
+        binding.listMovie.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
-            adapter.clear()
+            adapter.submitList(emptyList())
             viewModel.refreshData()
         }
         binding.listMovie.addOnScrollListener(object : OnScrollListener() {
@@ -54,8 +54,7 @@ class MovieListFragment : Fragment() {
 
     private fun setupViewObservers() {
         viewModel.movies.observe(viewLifecycleOwner) {
-            adapter.addItem(it)
-            binding.listMovie.adapter = adapter
+            adapter.submitList(it)
             binding.refreshLayout.isRefreshing = false
         }
     }
