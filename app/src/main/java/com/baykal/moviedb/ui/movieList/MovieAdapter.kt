@@ -2,6 +2,9 @@ package com.baykal.moviedb.ui.movieList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baykal.moviedb.databinding.ItemViewMovieBinding
 import com.baykal.moviedb.di.IMG_BASE_URL
@@ -10,19 +13,7 @@ import com.bumptech.glide.Glide
 
 class MovieAdapter(
     private val onClick: (id: Int) -> Unit
-) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
-
-    private var list: MutableList<MovieItem> = mutableListOf()
-
-    fun clear() {
-        list.clear()
-        notifyDataSetChanged()
-    }
-
-    fun addItem(movies: MutableList<MovieItem>) {
-        list.addAll(movies)
-        notifyDataSetChanged()
-    }
+) : ListAdapter<MovieItem, MovieAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,10 +22,10 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], onClick)
+        holder.bind(currentList[position], onClick)
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = currentList.size
 
     class ViewHolder(
         private val binding: ItemViewMovieBinding
@@ -55,5 +46,11 @@ class MovieAdapter(
                 binding.root.setOnClickListener { onClick.invoke(id) }
             }
         }
+    }
+
+    object DiffCallback : DiffUtil.ItemCallback<MovieItem>() {
+        override fun areItemsTheSame(oldItem: MovieItem, newItem: MovieItem) = oldItem === newItem
+        override fun areContentsTheSame(oldItem: MovieItem, newItem: MovieItem) =
+            oldItem.id == newItem.id
     }
 }
