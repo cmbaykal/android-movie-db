@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 const val BASE_URL = "api.themoviedb.org"
 const val IMG_BASE_URL = "https://image.tmdb.org/t/p/w500"
-const val API_KEY = "<API_KEY>"
+const val API_KEY = "6a3250b8b666ace2104278cd40e42255"
 const val TIME_OUT = 60000L
 
 @Module
