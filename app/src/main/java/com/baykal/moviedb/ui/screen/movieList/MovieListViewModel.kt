@@ -1,11 +1,12 @@
-package com.baykal.moviedb.ui.movieList
+package com.baykal.moviedb.ui.screen.movieList
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.baykal.moviedb.base.BaseViewModel
 import com.baykal.moviedb.network.data.response.MovieItem
 import com.baykal.moviedb.network.domain.MovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,8 +15,8 @@ class MovieListViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val movieList: MutableList<MovieItem> = mutableListOf()
-    private val _movies: MutableLiveData<List<MovieItem>> = MutableLiveData()
-    val movies: LiveData<List<MovieItem>> = _movies
+    private val _movies = MutableStateFlow<List<MovieItem>>(listOf())
+    val movies: StateFlow<List<MovieItem>> = _movies.asStateFlow()
 
     private var page = 1
     private var totalPages = -1
