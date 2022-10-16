@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchMoviewViewModel @Inject constructor(
+class SearchMovieViewModel @Inject constructor(
     private val searchMovieUseCase: SearchMovieUseCase
 ) : BaseViewModel() {
 

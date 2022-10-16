@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_background" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@id/image_movie"
         tools:text="Movie Title" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_title"
         tools:text="Movie Genres" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_release_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_title"
         tools:text="Movie Release Date" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

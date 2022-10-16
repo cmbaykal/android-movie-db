@@ -25,7 +25,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_launcher_background" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_movie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

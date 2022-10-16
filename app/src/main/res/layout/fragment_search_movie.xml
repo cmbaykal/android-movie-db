@@ -6,23 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".ui.searchMovie.SearchMovieFragment">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_movie_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Movie Name"
         android:layout_margin="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toStartOf="@id/button_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/button_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:id="@+id/button_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="65dp"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="@id/input_movie_name"
+        app:icon="@drawable/ic_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/input_movie_name" />
 
