@@ -10,5 +10,4 @@ class MovieListUseCase @Inject constructor(
 ) : BaseUseCase<Int, MovieResult>() {
 
     override fun build(params: Int) = movieRepository.getTrendingMovie(params)
-
 }

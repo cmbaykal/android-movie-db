@@ -18,9 +18,9 @@ class MovieListFragment : Fragment() {
     private lateinit var binding: FragmentMovieListBinding
     private lateinit var adapter: MovieAdapter
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMovieListBinding.inflate(layoutInflater, container, false)

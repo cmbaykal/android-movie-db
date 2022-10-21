@@ -8,7 +8,7 @@ class MovieRepository @Inject constructor(
     private val service: MovieServiceImp
 ) : BaseRepository() {
 
-    fun getTrendingMovie(page:Int) = fetch {
+    fun getTrendingMovie(page: Int) = fetch {
         service.getTrendingMovies(page)
     }
 

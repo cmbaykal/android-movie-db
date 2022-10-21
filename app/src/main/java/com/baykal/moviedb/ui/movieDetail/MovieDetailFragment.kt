@@ -19,7 +19,8 @@ class MovieDetailFragment : Fragment() {
     private val args: MovieDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMovieDetailBinding.inflate(layoutInflater, container, false)
