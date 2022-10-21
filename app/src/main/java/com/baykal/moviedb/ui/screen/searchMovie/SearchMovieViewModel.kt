@@ -1,15 +1,13 @@
 package com.baykal.moviedb.ui.screen.searchMovie
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.baykal.moviedb.base.BaseViewModel
 import com.baykal.moviedb.network.data.response.MovieItem
 import com.baykal.moviedb.network.domain.SearchMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class SearchMovieViewModel @Inject constructor(

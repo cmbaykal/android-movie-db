@@ -10,5 +10,4 @@ class SearchMovieUseCase @Inject constructor(
 ) : BaseUseCase<String, MovieResult>() {
 
     override fun build(params: String) = movieRepository.searchMovie(params)
-
 }

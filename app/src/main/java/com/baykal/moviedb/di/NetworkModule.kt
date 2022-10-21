@@ -10,9 +10,9 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.logging.HttpLoggingInterceptor
-import javax.inject.Singleton
 
 const val BASE_URL = "api.themoviedb.org"
 const val IMG_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -38,11 +38,13 @@ object NetworkModule {
             requestTimeoutMillis = TIME_OUT
         }
         install(ContentNegotiation) {
-            json(Json {
-                isLenient = true
-                prettyPrint = true
-                ignoreUnknownKeys = true
-            })
+            json(
+                Json {
+                    isLenient = true
+                    prettyPrint = true
+                    ignoreUnknownKeys = true
+                }
+            )
         }
         install(HttpCallValidator) {
             validateResponse {

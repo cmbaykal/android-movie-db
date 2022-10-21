@@ -14,9 +14,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -48,7 +45,8 @@ fun SearchMovieScreen(navController: NavController) {
                 )
                 Button(
                     modifier = Modifier.size(55.dp),
-                    onClick = { viewModel.searchMovie(value) }) {
+                    onClick = { viewModel.searchMovie(value) }
+                ) {
                     Icon(
                         Icons.Filled.Search,
                         contentDescription = "Search Icon"

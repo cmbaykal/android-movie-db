@@ -1,4 +1,4 @@
-package  com.baykal.moviedb.base
+package com.baykal.moviedb.base
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -10,5 +10,4 @@ abstract class BaseUseCase<in P, R>(private val dispatcher: CoroutineDispatcher 
     protected abstract fun build(params: P): Flow<R>
 
     fun observe(params: P): Flow<R> = build(params).flowOn(dispatcher)
-
 }

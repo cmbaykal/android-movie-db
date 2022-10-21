@@ -56,9 +56,9 @@ data class MovieItem(
 @Serializable
 data class MovieGenre(
     @SerialName("id")
-    val id:Long? = null,
+    val id: Long? = null,
     @SerialName("name")
-    val name:String? = null
+    val name: String? = null
 )
 
 @Serializable

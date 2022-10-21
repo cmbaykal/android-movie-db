@@ -16,7 +16,6 @@ import coil.request.ImageRequest
 import com.baykal.moviedb.di.IMG_BASE_URL
 import com.baykal.moviedb.network.data.response.MovieItem
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieComponent(

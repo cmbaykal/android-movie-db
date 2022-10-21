@@ -4,10 +4,10 @@ import com.baykal.moviedb.base.BaseViewModel
 import com.baykal.moviedb.network.data.response.MovieItem
 import com.baykal.moviedb.network.domain.MovieDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(

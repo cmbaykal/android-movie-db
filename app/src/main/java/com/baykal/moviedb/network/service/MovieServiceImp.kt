@@ -13,14 +13,14 @@ class MovieServiceImp(
     private val httpClient: HttpClient
 ) : MovieService {
 
-    override suspend fun getTrendingMovies(page:Int): MovieResult {
+    override suspend fun getTrendingMovies(page: Int): MovieResult {
         return httpClient.get {
             url {
                 protocol = URLProtocol.HTTPS
                 host = BASE_URL
                 path("/3/trending/all/day")
                 parameter("api_key", API_KEY)
-                parameter("page",page)
+                parameter("page", page)
             }
             contentType(ContentType.Application.Json)
         }.body()

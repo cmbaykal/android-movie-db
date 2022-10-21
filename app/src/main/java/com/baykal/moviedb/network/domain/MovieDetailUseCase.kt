@@ -10,5 +10,4 @@ class MovieDetailUseCase @Inject constructor(
 ) : BaseUseCase<Int, MovieItem>() {
 
     override fun build(params: Int) = movieRepository.getMovieDetail(params)
-
 }

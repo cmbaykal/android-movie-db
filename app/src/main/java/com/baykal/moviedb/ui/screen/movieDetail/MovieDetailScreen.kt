@@ -52,7 +52,8 @@ fun MovieDetailScreen(id: Int?) {
                 Text(
                     modifier = Modifier.padding(10.dp),
                     fontSize = 14.sp,
-                    text = buildString { movie.genres?.forEach { append("${it.name} ") } })
+                    text = buildString { movie.genres?.forEach { append("${it.name} ") } }
+                )
                 Text(
                     modifier = Modifier.padding(10.dp),
                     fontSize = 14.sp,
