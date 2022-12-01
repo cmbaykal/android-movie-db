@@ -36,23 +36,25 @@ class MainActivity : ComponentActivity() {
 
             Scaffold(
                 topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = toolbarTitle)
-                        },
-                        navigationIcon = getNavigationIcon(currentRoute, navController),
-                        actions = {
-                            if (currentRoute == "movieList") {
-                                IconButton(onClick = { navController.navigate("searchMovie") }) {
-                                    Icon(
-                                        Icons.Filled.Search,
-                                        tint = Color.White,
-                                        contentDescription = "Search Icon"
-                                    )
+                    if (toolbarTitle.isNotEmpty()) {
+                        TopAppBar(
+                            title = {
+                                Text(text = toolbarTitle)
+                            },
+                            navigationIcon = getNavigationIcon(currentRoute, navController),
+                            actions = {
+                                if (currentRoute == "movieList") {
+                                    IconButton(onClick = { navController.navigate("searchMovie") }) {
+                                        Icon(
+                                            Icons.Filled.Search,
+                                            tint = Color.White,
+                                            contentDescription = "Search Icon"
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             ) {
                 NavHost(
@@ -82,7 +84,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun getNavigationIcon(route: String, navController: NavController): @Composable (() -> Unit)? {
-        return if (route != "movieList") {
+        return if (route.isNotEmpty() && route != "movieList") {
             {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Back Icon")
