@@ -50,7 +50,7 @@ data class MovieItem(
     @SerialName("production_companies")
     val productionCompanies: List<MovieCompanies>? = null,
     @SerialName("production_countries")
-    val productionCountries: List<MovieCountries>? = null,
+    val productionCountries: List<MovieCountries>? = null
 )
 
 @Serializable
