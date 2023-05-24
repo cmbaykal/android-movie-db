@@ -21,7 +21,8 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.baykal.moviedb.ui.movieDetail.MovieDetailFragment"
-        android:label="Movie Detail">
+        android:label="Movie Detail"
+        tools:layout="@layout/fragment_movie_detail">
         <argument
             android:name="movieId"
             android:defaultValue="0"
@@ -32,11 +33,10 @@
         android:id="@+id/searchMovieFragment"
         android:name="com.baykal.moviedb.ui.searchMovie.SearchMovieFragment"
         android:label="Search Movie"
-        tools:layout="@layout/fragment_search_moview">
+        tools:layout="@layout/fragment_search_movie">
         <action
             android:id="@+id/navigateToDetail"
             app:destination="@id/movieDetailFragment" />
     </fragment>
-
 
 </navigation>

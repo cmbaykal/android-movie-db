@@ -15,8 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
     private val viewModel: MovieListViewModel by viewModels()
-    private lateinit var binding: FragmentMovieListBinding
-    private lateinit var adapter: MovieAdapter
+
+    private var binding: FragmentMovieListBinding? = null
+    private var adapter: MovieAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,37 +26,50 @@ class MovieListFragment : Fragment() {
     ): View {
         binding = FragmentMovieListBinding.inflate(layoutInflater, container, false)
 
-        initLayout()
+        setupLayout()
         setupViewObservers()
 
-        return binding.root
+        return binding?.root ?: View(context)
     }
 
-    private fun initLayout() {
+    private fun setupLayout() {
         adapter = MovieAdapter { id ->
             val direction = MovieListFragmentDirections.navigateToDetail(id)
             findNavController().navigate(direction)
         }
-        binding.listMovie.adapter = adapter
-        binding.refreshLayout.setOnRefreshListener {
-            adapter.submitList(emptyList())
-            viewModel.refreshData()
-        }
-        binding.listMovie.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.fetchData()
-                }
+        binding?.apply {
+            listMovie.adapter = adapter
+            refreshLayout.setOnRefreshListener {
+                adapter?.submitList(emptyList())
+                viewModel.refreshData()
             }
-        })
+            listMovie.addOnScrollListener(object : OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    if (!recyclerView.canScrollVertically(1)) {
+                        viewModel.fetchData()
+                    }
+                }
+            })
+        }
     }
 
     private fun setupViewObservers() {
-        viewModel.movies.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            binding.refreshLayout.isRefreshing = false
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding?.refreshLayout?.apply {
+                isRefreshing = it
+                isEnabled = !it
+            }
         }
+        viewModel.movies.observe(viewLifecycleOwner) {
+            adapter?.submitList(it)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+        binding = null
     }
 }
