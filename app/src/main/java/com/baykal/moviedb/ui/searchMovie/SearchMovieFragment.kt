@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.baykal.moviedb.databinding.FragmentSearchMovieBinding
 import com.baykal.moviedb.ui.movieList.MovieAdapter
 import com.baykal.moviedb.ui.movieList.MovieListFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchMovieFragment : Fragment() {
@@ -41,16 +44,26 @@ class SearchMovieFragment : Fragment() {
             findNavController().navigate(direction)
         }
         binding.listMovie.adapter = adapter
-        with(binding) {
-            buttonSearch.setOnClickListener {
-                viewModel.searchMovie(inputMovieName.editText?.text.toString())
+        binding.buttonSearch.setOnClickListener {
+            lifecycleScope.launch {
+                val query = binding.inputMovieName.editText?.text.toString()
+                viewModel.userIntent.send(SearchMovieIntent.SearchMovie(query))
             }
         }
     }
 
     private fun setupViewObservers() {
-        viewModel.movies.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                when (it) {
+                    SearchMovieState.Idle -> {}
+                    SearchMovieState.Loading -> DialogUtil.showLoading(context)
+                    is SearchMovieState.Error -> DialogUtil.showError(context, it.message)
+                    is SearchMovieState.SearchList -> {
+                        adapter.submitList(it.list)
+                    }
+                }
+            }
         }
     }
 }
