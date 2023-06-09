@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.baykal.moviedb.base.DialogUtil
 import com.baykal.moviedb.databinding.FragmentMovieDetailBinding
 import com.baykal.moviedb.di.IMG_BASE_URL
 import com.bumptech.glide.Glide
@@ -27,9 +28,11 @@ class MovieDetailFragment : Fragment() {
     ): View {
         binding = FragmentMovieDetailBinding.inflate(layoutInflater, container, false)
 
-        viewModel.getMovieDetail(args.movieId)
-
         setupViewObservers()
+
+        lifecycleScope.launch {
+            viewModel.userIntent.send(MovieDetailIntent.FetchMovieDetail(args.movieId))
+        }
 
         return binding.root
     }
@@ -40,18 +43,18 @@ class MovieDetailFragment : Fragment() {
                 when (it) {
                     MovieDetailState.Idle -> {}
                     MovieDetailState.Loading -> DialogUtil.showLoading(context)
-                    is MovieDetailState.Error -> DialogUtil.showError(it.message)
+                    is MovieDetailState.Error -> DialogUtil.showError(context, it.message)
                     is MovieDetailState.MovieDetail -> {
+                        DialogUtil.closeDialog()
                         it.detail?.apply {
                             Glide.with(requireContext()).load(IMG_BASE_URL + posterPath).into(binding.imageMovie)
                             binding.textTitle.text = name ?: title ?: originalTitle
-                            binding.textGenre.text = buildString { genres?.forEach { append("${name} ") } }
+                            binding.textGenre.text = buildString { genres?.forEach { genre -> append("$genre.name ") } }
                             binding.textReleaseDate.text = releaseDate
                             binding.textDescription.text = overview
                         }
                     }
                 }
-
             }
         }
     }

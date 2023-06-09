@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.baykal.moviedb.base.DialogUtil
 import com.baykal.moviedb.databinding.FragmentMovieListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,6 +31,9 @@ class MovieListFragment : Fragment() {
 
         setupLayout()
         setupViewObservers()
+        lifecycleScope.launch {
+            viewModel.userIntent.send(MovieListIntent.FetchMovieList)
+        }
 
         return binding?.root ?: View(context)
     }
@@ -69,6 +73,7 @@ class MovieListFragment : Fragment() {
                     MovieListState.Loading -> DialogUtil.showLoading(context)
                     is MovieListState.Error -> DialogUtil.showError(context, it.message)
                     is MovieListState.MovieList -> {
+                        DialogUtil.closeDialog()
                         adapter?.submitList(it.list)
                     }
                 }

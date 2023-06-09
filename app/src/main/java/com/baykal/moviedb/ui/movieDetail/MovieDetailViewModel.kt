@@ -16,7 +16,7 @@ class MovieDetailViewModel @Inject constructor(
     private val movieDetailUseCase: MovieDetailUseCase
 ) : BaseViewModel() {
 
-    private val userIntent = Channel<MovieDetailIntent>(Channel.UNLIMITED)
+    val userIntent = Channel<MovieDetailIntent>(Channel.UNLIMITED)
     private val _state = MutableStateFlow<MovieDetailState>(MovieDetailState.Idle)
     val state: StateFlow<MovieDetailState> = _state
 

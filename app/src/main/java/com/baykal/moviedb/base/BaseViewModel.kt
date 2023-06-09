@@ -12,12 +12,13 @@ abstract class BaseViewModel : ViewModel() {
     private val scope = viewModelScope
 
     protected fun <T> Flow<T>.collectData(
-        onSuccess: (T?) -> Unit
+        onSuccess: (T?) -> Unit,
+        onError: (String?) -> Unit
     ): Job {
         return onEach {
             onSuccess.invoke(it)
         }.catch { e ->
-            throw e
+            onError.invoke(e.message)
         }.launchIn(scope)
     }
 }

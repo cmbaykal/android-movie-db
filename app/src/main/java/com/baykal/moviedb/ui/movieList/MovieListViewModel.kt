@@ -64,6 +64,7 @@ class MovieListViewModel @Inject constructor(
                         _state.value = MovieListState.MovieList(movieList.toMutableList())
                         totalPages = response.totalPages ?: -1
                         page++
+                        _state.value = MovieListState.Idle
                     }
                 }
             )

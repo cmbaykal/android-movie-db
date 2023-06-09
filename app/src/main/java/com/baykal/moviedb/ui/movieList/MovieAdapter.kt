@@ -35,7 +35,7 @@ class MovieAdapter(
             onClick: (id: Int) -> Unit
         ) {
             movieItem.posterPath?.let {
-                Glide.with(binding.root.context).load(IMG_BASE_URL + it).into(binding.imageMoview)
+                Glide.with(binding.root.context).load(IMG_BASE_URL + it).into(binding.imageMovie)
             }
 
             val name = movieItem.name ?: movieItem.title ?: movieItem.originalTitle

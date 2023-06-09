@@ -18,12 +18,13 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/image_moview"
+                android:id="@+id/image_movie"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="fitXY"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher_background" />
+                tools:src="@drawable/ic_launcher_background"
+                android:contentDescription="@null" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_movie"
@@ -32,7 +33,7 @@
                 android:padding="10dp"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_moview"
+                app:layout_constraintTop_toBottomOf="@id/image_movie"
                 tools:text="Movie Title" />
 
 
