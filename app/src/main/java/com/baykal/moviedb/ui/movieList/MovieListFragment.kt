@@ -74,6 +74,7 @@ class MovieListFragment : Fragment() {
                     is MovieListState.Error -> DialogUtil.showError(context, it.message)
                     is MovieListState.MovieList -> {
                         DialogUtil.closeDialog()
+                        binding?.refreshLayout?.isRefreshing = false
                         adapter?.submitList(it.list)
                     }
                 }

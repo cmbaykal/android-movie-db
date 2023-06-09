@@ -34,7 +34,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun getMovieDetail(id: Int) {
+    private fun getMovieDetail(id: Int) {
         _state.value = MovieDetailState.Loading
         movieDetailUseCase.observe(id).collectData(
             onError = {
