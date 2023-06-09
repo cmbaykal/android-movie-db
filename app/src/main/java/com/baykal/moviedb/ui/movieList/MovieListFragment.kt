@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.baykal.moviedb.databinding.FragmentMovieListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
@@ -41,14 +43,18 @@ class MovieListFragment : Fragment() {
             listMovie.adapter = adapter
             refreshLayout.setOnRefreshListener {
                 adapter?.submitList(emptyList())
-                viewModel.refreshData()
+                lifecycleScope.launch {
+                    viewModel.userIntent.send(MovieListIntent.RefreshList)
+                }
             }
             listMovie.addOnScrollListener(object : OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
 
                     if (!recyclerView.canScrollVertically(1)) {
-                        viewModel.fetchData()
+                        lifecycleScope.launch {
+                            viewModel.userIntent.send(MovieListIntent.FetchMovieList)
+                        }
                     }
                 }
             })
@@ -56,14 +62,17 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setupViewObservers() {
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding?.refreshLayout?.apply {
-                isRefreshing = it
-                isEnabled = !it
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                when (it) {
+                    MovieListState.Idle -> {}
+                    MovieListState.Loading -> DialogUtil.showLoading(context)
+                    is MovieListState.Error -> DialogUtil.showError(context, it.message)
+                    is MovieListState.MovieList -> {
+                        adapter?.submitList(it.list)
+                    }
+                }
             }
-        }
-        viewModel.movies.observe(viewLifecycleOwner) {
-            adapter?.submitList(it)
         }
     }
 
