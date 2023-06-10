@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -28,40 +29,44 @@ fun SearchMovieScreen(navController: NavController) {
 
     val scrollState = rememberLazyGridState()
 
-    with(movieList) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = value,
-                    onValueChange = { value = it },
-                    label = { Text("Movie Name") },
-                    maxLines = 1
-                )
-                Button(
-                    modifier = Modifier.size(55.dp),
-                    onClick = { viewModel.searchMovie(value) }
-                ) {
-                    Icon(
-                        Icons.Filled.Search,
-                        contentDescription = "Search Icon"
-                    )
+    val focusManager = LocalFocusManager.current
+
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = value,
+                onValueChange = { value = it },
+                label = { Text("Movie Name") },
+                maxLines = 1
+            )
+            Button(
+                modifier = Modifier.size(55.dp),
+                onClick = {
+                    focusManager.clearFocus()
+                    viewModel.searchMovie(value)
                 }
-            }
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                columns = GridCells.Fixed(2),
-                state = scrollState
             ) {
-                items(movieList) { movie ->
-                    MovieComponent(movie) {
-                        navController.navigate("movie/${movie.id}")
-                    }
+                Icon(
+                    Icons.Filled.Search,
+                    contentDescription = "Search Icon"
+                )
+            }
+        }
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxSize(),
+            columns = GridCells.Fixed(2),
+            state = scrollState
+        ) {
+            items(movieList) { movie ->
+                MovieComponent(movie) {
+                    navController.navigate("movie/${movie.id}")
                 }
             }
         }
