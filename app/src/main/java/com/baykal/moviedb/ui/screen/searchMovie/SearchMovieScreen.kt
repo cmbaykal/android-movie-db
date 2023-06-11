@@ -18,19 +18,20 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.baykal.moviedb.base.ErrorDialog
+import com.baykal.moviedb.base.LoadingDialog
 import com.baykal.moviedb.ui.component.MovieComponent
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchMovieScreen(navController: NavController) {
     val viewModel: SearchMovieViewModel = hiltViewModel()
-    val movieList by viewModel.movies.collectAsState()
+    val screenState = viewModel.state.collectAsState()
 
+    val coroutineScope = rememberCoroutineScope()
     var value by remember { mutableStateOf("") }
-
     val scrollState = rememberLazyGridState()
-
     val focusManager = LocalFocusManager.current
-
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -50,7 +51,9 @@ fun SearchMovieScreen(navController: NavController) {
                 modifier = Modifier.size(55.dp),
                 onClick = {
                     focusManager.clearFocus()
-                    viewModel.searchMovie(value)
+                    coroutineScope.launch {
+                        viewModel.userIntent.send(SearchMovieIntent.SearchMovie(value))
+                    }
                 }
             ) {
                 Icon(
@@ -59,14 +62,23 @@ fun SearchMovieScreen(navController: NavController) {
                 )
             }
         }
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxSize(),
-            columns = GridCells.Fixed(2),
-            state = scrollState
-        ) {
-            items(movieList) { movie ->
-                MovieComponent(movie) {
-                    navController.navigate("movie/${movie.id}")
+        when (screenState.value) {
+            is SearchMovieState.Idle -> {}
+            is SearchMovieState.Loading -> LoadingDialog()
+            is SearchMovieState.Error -> ErrorDialog((screenState.value as SearchMovieState.Error).message)
+            is SearchMovieState.SearchList -> {
+                val list = (screenState.value as SearchMovieState.SearchList).list
+
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxSize(),
+                    columns = GridCells.Fixed(2),
+                    state = scrollState
+                ) {
+                    items(list) { movie ->
+                        MovieComponent(movie) {
+                            navController.navigate("movie/${movie.id}")
+                        }
+                    }
                 }
             }
         }

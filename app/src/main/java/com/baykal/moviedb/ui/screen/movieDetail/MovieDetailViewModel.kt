@@ -1,27 +1,57 @@
 package com.baykal.moviedb.ui.screen.movieDetail
 
+import androidx.lifecycle.viewModelScope
 import com.baykal.moviedb.base.BaseViewModel
 import com.baykal.moviedb.network.data.response.MovieItem
 import com.baykal.moviedb.network.domain.MovieDetailUseCase
+import com.baykal.moviedb.ui.screen.movieList.MovieListIntent
+import com.baykal.moviedb.ui.screen.movieList.MovieListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val movieDetailUseCase: MovieDetailUseCase
 ) : BaseViewModel() {
 
-    private val _movieDetail = MutableStateFlow<MovieItem?>(null)
-    val movieDetail: StateFlow<MovieItem?> = _movieDetail.asStateFlow()
+    val userIntent = Channel<MovieDetailIntent>(Channel.UNLIMITED)
+    private val _state = MutableStateFlow<MovieDetailState>(MovieDetailState.Idle)
+    val state: StateFlow<MovieDetailState> = _state
 
-    fun getMovieDetail(id: Int) {
-        movieDetailUseCase.observe(id).collectData { response ->
-            response?.let {
-                _movieDetail.value = it
+    init {
+        handleIntent()
+    }
+
+    private fun handleIntent() {
+        viewModelScope.launch {
+            userIntent.consumeAsFlow().collect {
+                when (it) {
+                    is MovieDetailIntent.FetchMovieDetail -> getMovieDetail(it.id)
+                }
             }
         }
+    }
+
+    private fun getMovieDetail(id: Int) {
+        _state.value = MovieDetailState.Loading
+        movieDetailUseCase.observe(id).collectData(
+            onError = {
+                _state.value = MovieDetailState.Error(it)
+            },
+            onSuccess = {
+                _state.value = MovieDetailState.MovieDetail(it)
+            }
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        userIntent.close()
     }
 }
