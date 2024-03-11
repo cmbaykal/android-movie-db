@@ -49,7 +49,7 @@ class MovieDetailFragment : Fragment() {
                         it.detail?.apply {
                             Glide.with(requireContext()).load(IMG_BASE_URL + posterPath).into(binding.imageMovie)
                             binding.textTitle.text = name ?: title ?: originalTitle
-                            binding.textGenre.text = buildString { genres?.forEach { genre -> append("$genre.name ") } }
+                            binding.textGenre.text = buildString { genres?.forEach { genre -> append("${genre.name }") } }
                             binding.textReleaseDate.text = releaseDate
                             binding.textDescription.text = overview
                         }
